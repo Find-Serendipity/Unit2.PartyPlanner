@@ -1,4 +1,4 @@
-// state
+// STATE
 
 // establish a base connection to the API
 
@@ -6,14 +6,14 @@ const API_URL = `https://fsa-crud-2aa9294fe819.herokuapp.com/api/2402-FTB-ET-WEB
 
 // create a function to await and fetch the API
 // then create a json variable to await the awaitFetch with .json()
-// this is being used in multiple functions
+// this is being used in multiple functions, which is why it is in the state
 const awaitFetchJson = async () => {
   let fetchAPI = await fetch(API_URL);
   let transformerJson = await fetchAPI.json();
   return transformerJson;
 };
 
-// create an empty array for JSON data
+// create an object with an empty array for JSON data
 
 const partyTime = {
   parties: [],
@@ -21,21 +21,37 @@ const partyTime = {
 
 // establish DOM connections
 
-// async functions
+const partyList = document.querySelector(`#parties`);
+
+// ASYNC FUNCTIONS
+
+// required: sync the partyTime state by invoking functions
+
+async function render() {
+  await partyTimeConnection();
+  renderEvents();
+}
+
+// required: render the render function
+
+render();
 
 // required: add API to the empty partyTime state array partyTime to use later
-// create an async function that
-// try(s) to
-// return awaitFetchJson
-// update the partyTime state object with the data from the new json object
-// catch any errors in the console.log
 
-// * Sync partyTime state with the API and rerender
-// */
-// async function renderEvents() {
-//  await getArtists();
-//  renderArtists();
-// }
+// create an async function //
+async function partyTimeConnection() {
+  // that try(s) to
+  try {
+    // create a variable to await the awaitFetchJson
+    const gotData = await awaitFetchJson();
+    console.log(gotData);
+    // update the partyTime state object with the data from the new json object
+    partyTime.parties = gotData.data;
+  } catch (error) {
+    // catch any errors in the console.log
+    console.log(`THERE'S A BAR ERROR FOO`);
+  }
+}
 
 // optional: add form information to API
 // create an async function that
@@ -54,29 +70,34 @@ const partyTime = {
 // POST input information
 // return awaitFetchJson
 
-// perform regular functions
+// REGULAR FUNCTIONS
 
-// required: invoke renderEvents function
+// required: render from partyTime state to the DOM
 
-// renderEvents();
-
-// required: render partyTime state to DOM
 // create a renderEvents function
-// that creates a new varible eventsItems
-// that is a .map of the partyTime array
-// which creates an anonymous function
-// that looks through eachObject in the array
-// and creates a new li element
-// and sets the innerText of eachObject
-// to contain the ${eachObject.key1} - ${eachObject.key2} - etc
-// names
-// dates
-// times
-// locations
-// descriptions
-// return the li element afterward, back to the .map;
-// });
-// .replaceChildren of partyTime with a spread of eventsItems
+function renderEvents() {
+  // that creates a new varible eventsItems
+  // that is a .map of the partyTime array
+  // that creates an anonymous function that looks through eachObject in the array
+  const eventItems = partyTime.parties.map((eachObject) => {
+    // create a timePlaceholder against eachObject.date
+    const timePlaceholder = eachObject.date;
+    console.log(timePlaceholder);
+    // create a timeStamp using with timePlaceholder and Date.parse
+    const timeStamp = Date.parse(timePlaceholder);
+    // creates a new li element
+    const li = document.createElement(`li`);
+    // and sets the innerText of the new li generated in eachObject to contain
+    // the ${eachObject.name} - ${eachObject.date} - times, locations, descriptions, etc
+    li.innerHTML = `${eachObject.name} - ${eachObject.date} - ${timeStamp} - ${eachObject.location} - ${eachObject.description}`;
+    // return the li element afterward, back to the .map;
+    return li;
+    // });
+  });
+
+  // .replaceChildren of DOM object partyList with a spread of eventsItems
+  partyList.replaceChildren(...eventItems);
+}
 
 // There is also a form
 // that allows the user to enter information
