@@ -90,16 +90,16 @@ function renderEvents() {
     // create a timeStamp using tConvert starting at the timeSplit at index 0
     const timeStamp = tConvert(timeSplit[0]);
     // creates a new li element
-    const li = document.createElement(`li`);
+    const div = document.createElement(`div`);
     // and sets the innerText of the new li generated in eachObject to contain
     // the ${eachObject.name} - ${eachObject.date} - times, locations, descriptions, etc
-    li.innerHTML = `${eachObject.name.toUpperCase()} </br> ${
+    div.innerHTML = `${eachObject.name.toUpperCase()} </br></br> Date: ${
       dateTimeSplit[0]
-    } </br> ${timeStamp} </br> ${eachObject.location} </br> ${
-      eachObject.description
-    } </br></br>`;
+    }  </br> Time: ${timeStamp} </br></br> Location: ${
+      eachObject.location
+    } </br></br> Description: </br> ${eachObject.description} </br></br>`;
     // return the li element afterward, back to the .map;
-    return li;
+    return div;
     // });
   });
 
