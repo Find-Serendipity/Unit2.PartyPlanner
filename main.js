@@ -44,7 +44,6 @@ async function partyTimeConnection() {
   try {
     // create a variable to await the awaitFetchJson
     const gotData = await awaitFetchJson();
-    console.log(gotData);
     // update the partyTime state object with the data from the new json object
     partyTime.parties = gotData.data;
   } catch (error) {
@@ -53,24 +52,26 @@ async function partyTimeConnection() {
   }
 }
 
-// optional: add form information to API
-// create an async function that
-// addsEventListener to the form submit
-// which runs a function that
-// creates a new variable
-// that creates a new object
-// that takes in each element of the form
-// which contains the information from each input from the form:
-// names
-// dates
-// times
-// locations
-// descriptions
-// try(s) to
-// POST input information
-// return awaitFetchJson
-
 // REGULAR FUNCTIONS
+
+// borrow a function that splits time strings into an AM/PM format
+// shamelessly plugged in from https://stackoverflow.com/questions/13898423/javascript-convert-24-hour-time-of-day-string-to-12-hour-time-with-am-pm-and-no
+// why are dates and times so hard T_T
+
+function tConvert(time) {
+  // Check correct time format and split into components
+  time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [
+    time,
+  ];
+
+  if (time.length > 1) {
+    // If time format correct
+    time = time.slice(1); // Remove full string match value
+    time[5] = +time[0] < 12 ? "AM" : "PM"; // Set AM/PM
+    time[0] = +time[0] % 12 || 12; // Adjust hours
+  }
+  return time.join(""); // return adjusted time or original string
+}
 
 // required: render from partyTime state to the DOM
 
@@ -82,14 +83,21 @@ function renderEvents() {
   const eventItems = partyTime.parties.map((eachObject) => {
     // create a timePlaceholder against eachObject.date
     const timePlaceholder = eachObject.date;
-    console.log(timePlaceholder);
-    // create a timeStamp using with timePlaceholder and Date.parse
-    const timeStamp = Date.parse(timePlaceholder);
+    // create a dateTimeSplit using a split on the timePlaceholder
+    const dateTimeSplit = timePlaceholder.split(`T`);
+    // create a timeSplit starting at the dateTimeSplit at index 1
+    const timeSplit = dateTimeSplit[1].split(`.`);
+    // create a timeStamp using tConvert starting at the timeSplit at index 0
+    const timeStamp = tConvert(timeSplit[0]);
     // creates a new li element
     const li = document.createElement(`li`);
     // and sets the innerText of the new li generated in eachObject to contain
     // the ${eachObject.name} - ${eachObject.date} - times, locations, descriptions, etc
-    li.innerHTML = `${eachObject.name} - ${eachObject.date} - ${timeStamp} - ${eachObject.location} - ${eachObject.description}`;
+    li.innerHTML = `${eachObject.name.toUpperCase()} </br> ${
+      dateTimeSplit[0]
+    } </br> ${timeStamp} </br> ${eachObject.location} </br> ${
+      eachObject.description
+    } </br></br>`;
     // return the li element afterward, back to the .map;
     return li;
     // });
@@ -98,14 +106,3 @@ function renderEvents() {
   // .replaceChildren of DOM object partyList with a spread of eventsItems
   partyList.replaceChildren(...eventItems);
 }
-
-// There is also a form
-// that allows the user to enter information
-// about a new party that they want to schedule.
-// After filling out the form and submitting it,
-// the user observes their party added to the list of parties.
-
-// Next to each party in the list
-// is a delete button.
-// The user clicks the delete button for one of the parties.
-// That party is then removed from the list.
