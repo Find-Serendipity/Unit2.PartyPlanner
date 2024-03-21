@@ -52,6 +52,24 @@ async function partyTimeConnection() {
   }
 }
 
+// optional: create a form that allows users to enter data into the API
+// listen for when a user clicks on the submit button from the form
+// create an anonymous async function that
+// creates a new variable that
+// takes in the information from the form
+// then push the information into an empty filledForm object
+// transfer the information from the filledForm object
+// into a json wrapper
+// then create a new variable that
+// await and fetch the API_URL
+// and adds a method to POST object
+// that sends a body of JSON.stringify of the filledForm
+// let postPusher = await fetch(API_URL, {
+// method: "POST"
+// body: JSON.stringify(filledForm),
+// });
+// render the state again();
+
 // REGULAR FUNCTIONS
 
 // borrow a function that splits time strings into an AM/PM format

@@ -8,12 +8,26 @@
     <body>
         <section>
             <h1>Let's plan a party!</h1>
-            <form></form>
+            <form id="formform">
+                <label for="name">Name of Event</label><br>
+                <input type="text" id="name" required="required">
+                <br>                
+                <label for="datetime">Date and Time of Event</label><br>
+                <input type="datetime-local" id="date" required="required" value="2024-03-21T08:17:07.429Z" min="2024-03-21T08:17:07.429Z" max="2026-03-21T08:17:07.429Z" />>
+                <br>
+                <label for="location">Location</label><br>
+                <input type="text" id="location" required="required">
+                <br>
+                <label for="description">Description</label><br>
+                <textarea id="description" rows="10" cols="30" required="required"></textarea>
+                <br><br>
+                <input type="submit" id="submit" value="Add Your Event to the List!">
+            </form>
 
             <section class="header"><h2>Available Parties</h2>
-            <div id="parties">
+            <section id="parties">
 
-            </div>
+            </section>
             </section>
         </section>
 
