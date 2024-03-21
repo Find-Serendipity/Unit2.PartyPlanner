@@ -22,6 +22,11 @@ const partyTime = {
 // establish DOM connections
 
 const partyList = document.querySelector(`#parties`);
+const formName = document.querySelector(`#name`);
+const formDate = document.querySelector(`#date`);
+const formLocation = document.querySelector(`#location`);
+const formDescription = document.querySelector(`#description`);
+const formSubmit = document.querySelector(`#submit`);
 
 // ASYNC FUNCTIONS
 
@@ -52,23 +57,44 @@ async function partyTimeConnection() {
   }
 }
 
+// async function findID() {
+//   try {
+//     const findID = await awaitFetchJson(apiID);
+//     if (findID.data.id !== apiID) {
+//       return Math.floor(Math.random * 1000)
+//     } else {
+//       return apiID
+//     }
+//   }
+// }
+
 // optional: create a form that allows users to enter data into the API
-// listen for when a user clicks on the submit button from the form
+
+// listen for when a user clicks on the submit button
 // create an anonymous async function that
-// creates a new variable that
-// takes in the information from the form
-// then push the information into an empty filledForm object
-// transfer the information from the filledForm object
-// into a json wrapper
-// then create a new variable that
-// await and fetch the API_URL
-// and adds a method to POST object
-// that sends a body of JSON.stringify of the filledForm
-// let postPusher = await fetch(API_URL, {
-// method: "POST"
-// body: JSON.stringify(filledForm),
-// });
-// render the state again();
+formSubmit.addEventListener(`click`, async (event) => {
+  // immediately ignores the default action
+  event.preventDefault();
+  // creates a formIntake variable that
+  const formIntake = {};
+  // forces information from the form into formIntake
+  // name, date, location, description
+  formIntake.name = formName.value;
+  formIntake.date = formDate.value;
+  formIntake.location = formLocation.value;
+  formIntake.description = formDescription.value;
+
+  // then create a new variable that
+  // await and fetch the API_URL
+  // and adds a method to POST object
+  // that sends a body of JSON.stringify of the filledForm
+  await fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify(formIntake),
+  });
+  // render the state again();
+  render();
+});
 
 // REGULAR FUNCTIONS
 
